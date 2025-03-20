@@ -1,0 +1,54 @@
+version: "3"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    restart: always
+    ports:
+      - 8000:8000
+    depends_on:
+      - rabbitmq
+      - minio
+
+  resize:
+    build:
+      context: .
+      dockerfile: resize/Dockerfile
+    restart: always
+    depends_on:
+      - rabbitmq
+      - minio
+
+  rabbitmq:
+    image: rabbitmq:3.11.2-management-alpine
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: "rabbitmq"
+      RABBITMQ_DEFAULT_PASS: "rabbitmq"
+    ports:
+      - 15672:15672
+      - 5672:5672
+
+  minio:
+    image: minio/minio:latest
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    networks:
+      - minionetwork
+    volumes:
+      - "minio_data:/data"
+    environment:
+      - MINIO_ROOT_USER=user
+      - MINIO_ROOT_PASSWORD=pasword
+      - MINIO_DEFAULT_BUCKETS=images
+
+networks:
+  minionetwork:
+    driver: bridge
+
+volumes:
+  minio_data:
+    driver: local
