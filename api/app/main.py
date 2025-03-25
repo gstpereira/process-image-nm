@@ -1,20 +1,13 @@
-from fastapi import FastAPI, UploadFile as FastUploadFile
-from app.domain.entity import UploadFile
+from fastapi import FastAPI
+from app.infra.container.container import Container
+from app.presentation.api.router import resize as resize_route
+
+
+container = Container()
+container.wire(modules=[resize_route])
 
 app = FastAPI()
+app.container = container
 
 
-@app.get("/")
-def home():
-    return {"Hello": "World"}
-
-
-@app.post("/uploadfile/")
-async def create_upload_file(file: FastUploadFile):
-    upload_file = UploadFile(
-        name=file.filename,
-        width=100,
-        height=100,
-        file=await file.read()
-    )
-    return {"filename": upload_file.name}
+app.include_router(resize_route.router)
