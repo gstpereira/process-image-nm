@@ -13,9 +13,7 @@ router = APIRouter(
 @inject
 async def create_upload_file(
     file: FastUploadFile,
-    resize_file_use_case: Annotated[
-        ResizeFile, Depends(Provide[Container.resize_file_use_case])
-    ]):
+    resize_file_use_case: Annotated[ResizeFile, Depends(Provide[Container.resize_file_use_case])]):
     upload_file = UploadFile(
         name=file.filename,
         width=100,

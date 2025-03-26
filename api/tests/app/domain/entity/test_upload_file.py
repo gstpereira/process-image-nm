@@ -19,9 +19,9 @@ def test_initialization(upload_file):
     assert upload_file.height == height
     assert upload_file.file == file_content
 
-    
+
 def test_get_file_path(upload_file):
-    expected_path = "1920x1080/image.png"
-    
+    expected_path = "raw/image.png"
+
     assert upload_file.get_file_path() == expected_path
 

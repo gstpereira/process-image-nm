@@ -1,7 +1,6 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-
 class CustomBaseSettings(BaseSettings):
     model_config = SettingsConfigDict(env_file='.env', env_file_encoding='utf-8', extra='ignore')
 
@@ -12,6 +11,7 @@ class Config(CustomBaseSettings):
     STORAGE_ACCESS_KEY: str
     STORAGE_SECRET_KEY: str
     STORAGE_BUCKET: str
+    MESSAGE_BROKER_URL: str
 
 
 settings = Config()

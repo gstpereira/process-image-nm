@@ -13,4 +13,4 @@ class UploadFile:
         self.file = file
         
     def get_file_path(self):
-        return f'{self.width}x{self.height}/{self.name}'
+        return f'raw/{self.name}'
