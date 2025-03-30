@@ -38,10 +38,9 @@ class MinioStorage(Storage):
         self.minio_client.put_object(
             self.__bucket, upload_file.get_file_path(), upload_file.file, upload_file.size
         )
-        
+
         return f'{self.__bucket}/{upload_file.get_file_path()}'
 
     def get_object(self, file_path: str) -> str:
         response = self.minio_client.get_object(self.__bucket, file_path)
-        print(response)
-        return f'-'
+        return response.data
