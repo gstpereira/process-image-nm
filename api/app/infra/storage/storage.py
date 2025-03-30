@@ -7,7 +7,7 @@ from app.infra.config.base import settings
 class Storage(metaclass=ABCMeta):
 
     @abstractmethod
-    def save(self, file_path: str, file: UploadFile) -> str:
+    def save(self, upload_file: UploadFile) -> str:
         ...
 
 
