@@ -1,25 +1,31 @@
 services:
-  # api:
-  #   build:
-  #     context: .
-  #     dockerfile: api/Dockerfile
-  #   restart: always
-  #   env_file:
-  #     - api/local.env
-  #   ports:
-  #     - 8000:8000
-  #   depends_on:
-  #     - rabbitmq
-  #     - minio
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    restart: always
+    env_file:
+      - api/build.env
+    ports:
+      - 8000:8000
+    depends_on:
+      - rabbitmq
+      - minio
+    networks:
+      - minionetwork
 
-  # resize:
-  #   build:
-  #     context: .
-  #     dockerfile: resize/Dockerfile
-  #   restart: always
-  #   depends_on:
-  #     - rabbitmq
-  #     - minio
+  resize:
+    build:
+      context: .
+      dockerfile: resize/Dockerfile
+    restart: always
+    env_file:
+      - resize/build.env
+    depends_on:
+      - rabbitmq
+      - minio
+    networks:
+      - minionetwork
 
   rabbitmq:
     image: rabbitmq:3.11.2-management-alpine
@@ -30,6 +36,8 @@ services:
     ports:
       - 15672:15672
       - 5672:5672
+    networks:
+      - minionetwork
 
   minio:
     image: quay.io/minio/minio:latest

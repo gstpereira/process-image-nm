@@ -36,6 +36,7 @@ class RabbitMQ(MessageQueue):
     __channel: Channel = None
     
     async def connect(self):
+        print("Connecting to RabbitMQ...", settings.MESSAGE_BROKER_URL)
         if not self.__connection:
             self.__connection = await connect(settings.MESSAGE_BROKER_URL)
             self.__channel = await self.__connection.channel()

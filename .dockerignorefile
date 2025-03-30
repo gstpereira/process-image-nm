@@ -1,0 +1,11 @@
+node_modules
+dist
+.env
+*.log
+.DS_Store
+.git
+.gitignore
+docker-compose.override.yml
+__pycache__/
+.venv
+.local.env
