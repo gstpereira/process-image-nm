@@ -16,5 +16,4 @@ class Container(containers.DeclarativeContainer):
     resize_file_use_case = providers.Factory(
         ResizeFile,
         storage=storate,
-        message_queue=message_queue
     )

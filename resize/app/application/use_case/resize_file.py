@@ -2,16 +2,14 @@ import io
 from PIL import Image
 from app.domain.entity import UploadFile
 from app.infra.storage.storage import Storage
-from app.infra.queue.message_queue import MessageConsumeQueue, Processor
+from app.infra.queue.message_queue import Processor
 
 
 class ResizeFile(Processor):
     storage: Storage
-    message_queue: MessageConsumeQueue
     
-    def __init__(self, storage: Storage, message_queue: MessageConsumeQueue):
+    def __init__(self, storage: Storage):
         self.storage = storage
-        self.message_queue = message_queue
 
     async def execute(self, message: str):
         image_name = message.get("file_path").split("/")[-1]
