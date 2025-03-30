@@ -1,0 +1,1 @@
+from .resize_file import ResizeFile
