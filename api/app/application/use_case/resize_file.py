@@ -26,3 +26,4 @@ class ResizeFile:
         }))
         await self.message_queue.send(input_queue)
         logger.info(f"Message sent to queue: {input_queue.message_topic}")
+        return upload_file.get_file_path_risized(self.storage.get_uri())

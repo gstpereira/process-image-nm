@@ -16,6 +16,7 @@ def mock_message_queue():
 @pytest.fixture
 def mock_upload_file():
     mock_file = AsyncMock(spec=UploadFile)
+    mock_file.name = "test_image.jpg"
     mock_file.get_file_path.return_value = "mock/path/to/file"
     mock_file.file = b"mock file content"
     mock_file.width = 100

@@ -24,11 +24,13 @@ def mock_resize_file_use_case():
 
 @pytest.mark.asyncio
 async def test_create_upload_file(mock_file, mock_resize_file_use_case):
-    result = await create_upload_file(mock_file, mock_resize_file_use_case)
-    
-    assert result == {"filename": "test_image.jpg"}
+    mock_resize_file_use_case.execute.return_value = "100x100/test_image.jpg"
+
+    result = await create_upload_file(mock_file, mock_resize_file_use_case, 100, 100)
+
+    assert result == {"file": "100x100/test_image.jpg"}
     mock_resize_file_use_case.execute.assert_called_once()
-    
+
     called_args = mock_resize_file_use_case.execute.call_args[0][0]
     assert isinstance(called_args, UploadFile)
     assert called_args.name == "test_image.jpg"

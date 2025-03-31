@@ -27,6 +27,6 @@ async def create_upload_file(
         size=file.size,
         file=file.file
     )
-    await resize_file_use_case.execute(upload_file)
+    output = await resize_file_use_case.execute(upload_file)
     logger.info(f"File processing completed: {upload_file.name}")
-    return {"filename": upload_file.name}
+    return {"file": output}

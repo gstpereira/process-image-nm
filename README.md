@@ -34,15 +34,20 @@ This project uses Docker Compose to orchestrate its services, including RabbitMQ
 
   - Management UI: [http://localhost:15672](http://localhost:15672)
   - Default credentials:
-    - Username: `guest`
-    - Password: `guest`
+    - Username: `user`
+    - Password: `pass`
 
 - **MinIO**:
-  - MinIO is a high-performance, S3-compatible object storage system. It is used to store and retrieve files in a scalable and efficient manner.
+
+  - MinIO is a high-performance, S3-compatible object storage system. It is used to simulate S3 storage for this project. Uploaded images are stored here, and resized images are also saved for retrieval.
   - Console: [http://localhost:9001](http://localhost:9001)
   - Default credentials:
-    - Access Key: `minioadmin`
-    - Secret Key: `minioadmin`
+    - Access Key: `MINIOACCESSKEY`
+    - Secret Key: `MINIOSECRETKEY`
+
+- **FastAPI**:
+  - FastAPI provides an interactive API documentation where you can test endpoints, including uploading an image for processing. Once an image is uploaded, FastAPI processes it, resizes it, and returns a URL pointing to the resized image stored in MinIO.
+  - Documentation: [http://localhost:8000/docs](http://localhost:8000/docs)
 
 ### Stopping the Services
 
