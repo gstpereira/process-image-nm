@@ -12,4 +12,4 @@ COPY ./resize/app ./app
 
 ENV PATH=/root/.local/bin:$PATH
 
-ENTRYPOINT ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--workers", "4"]
+ENTRYPOINT ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--workers", "4", "--log-config", "app/log_config.yml", "--reload"]

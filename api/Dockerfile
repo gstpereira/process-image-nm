@@ -14,4 +14,4 @@ ENV PATH=/root/.local/bin:$PATH
 
 EXPOSE 8000
 
-ENTRYPOINT ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]
+ENTRYPOINT ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4", "--log-config", "app/log_config.yml", "--reload"]

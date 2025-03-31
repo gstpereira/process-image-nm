@@ -1,3 +1,4 @@
+import logging
 from typing import Annotated
 from fastapi import FastAPI, Depends, Request
 from app.infra.container.container import Container
@@ -7,6 +8,7 @@ from contextlib import asynccontextmanager, AsyncExitStack
 from app.presentation.api.router import resize as resize_route
 from fastapi.dependencies.utils import get_dependant, solve_dependencies
 
+logger = logging.getLogger(__name__)
 
 def inject_lifespan(lifespan):
     @asynccontextmanager
@@ -47,9 +49,11 @@ def inject_lifespan(lifespan):
 @inject_lifespan
 @inject
 async def lifespan(message_queue: Annotated[MessageQueue, Depends(Provide[Container.message_queue])]):
+    logger.info("Starting application lifespan")
     await message_queue.connect()
     yield
     await message_queue.close()
+    logger.info("Application lifespan ended")
 
 container = Container()
 container.wire(modules=[resize_route, __name__])
@@ -58,3 +62,4 @@ app = FastAPI(lifespan=lifespan)
 app.container = container
 
 app.include_router(resize_route.router)
+logger.info("Application started and routes included")

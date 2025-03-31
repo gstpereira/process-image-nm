@@ -1,8 +1,11 @@
 import json
 import asyncio
+import logging
 from abc import ABCMeta, abstractmethod
 from app.infra.config.base import settings
 from aio_pika import connect, Connection, Channel, IncomingMessage
+
+logger = logging.getLogger(__name__)
 
 
 class Processor(metaclass=ABCMeta):
@@ -37,9 +40,11 @@ class RabbitMQConsume(MessageConsumeQueue):
     __processor: Processor = None
 
     async def connect(self):
+        logger.info(f"Connecting to RabbitMQ at {settings.MESSAGE_BROKER_URL}")
         if not self.__connection:
             self.__connection = await connect(settings.MESSAGE_BROKER_URL)
             self.__channel = await self.__connection.channel()
+        logger.info("Connected to RabbitMQ")
 
     async def close(self):
         if self.__channel:
@@ -53,6 +58,7 @@ class RabbitMQConsume(MessageConsumeQueue):
     async def on_message(self, message: IncomingMessage) -> None:
         async with message.process():
             if self.__processor:
+                logger.info(f"Started processing message")
                 data = json.loads(message.body)
                 await self.__processor.execute(data)
 
@@ -63,6 +69,7 @@ class RabbitMQConsume(MessageConsumeQueue):
         await queue.consume(self.on_message, no_ack=False)
 
     async def start_consume(self, queue_name: str):
+        logger.info(f"Message queue started consuming from {queue_name}")
         self.consume_task = asyncio.create_task(self.consume(queue_name))
 
 
